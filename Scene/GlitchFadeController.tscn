@@ -1,0 +1,98 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://Script/GlitchFadeController.gd" type="Script" id=1]
+
+[node name="GlitchFadeController" type="Panel"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_right = -824.0
+margin_bottom = -450.0
+rect_min_size = Vector2( 300, 200 )
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Container" type="Control" parent="."]
+anchor_left = 0.1
+anchor_top = 0.1
+anchor_right = 0.9
+anchor_bottom = 0.9
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Container"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Button" type="Button" parent="Container/VBoxContainer"]
+margin_right = 240.0
+margin_bottom = 92.0
+size_flags_vertical = 3
+text = "PLAY"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Container/VBoxContainer"]
+margin_top = 96.0
+margin_right = 240.0
+margin_bottom = 116.0
+
+[node name="Label" type="Label" parent="Container/VBoxContainer/HBoxContainer"]
+margin_top = 3.0
+margin_right = 71.0
+margin_bottom = 17.0
+text = "DIRECTION"
+
+[node name="OptionButton" type="OptionButton" parent="Container/VBoxContainer/HBoxContainer"]
+margin_left = 75.0
+margin_right = 240.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+text = "UP"
+items = [ "UP", null, false, 0, null, "RIGHT", null, false, 1, null, "DOWN", null, false, 2, null, "LEFT", null, false, 3, null ]
+selected = 0
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="Container/VBoxContainer"]
+margin_top = 120.0
+margin_right = 240.0
+margin_bottom = 140.0
+
+[node name="Label" type="Label" parent="Container/VBoxContainer/HBoxContainer2"]
+margin_top = 3.0
+margin_right = 48.0
+margin_bottom = 17.0
+text = "EASING"
+
+[node name="OptionButton" type="OptionButton" parent="Container/VBoxContainer/HBoxContainer2"]
+margin_left = 52.0
+margin_right = 240.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+
+[node name="HBoxContainer3" type="HBoxContainer" parent="Container/VBoxContainer"]
+margin_top = 144.0
+margin_right = 240.0
+margin_bottom = 160.0
+
+[node name="Label" type="Label" parent="Container/VBoxContainer/HBoxContainer3"]
+margin_top = 1.0
+margin_right = 70.0
+margin_bottom = 15.0
+text = "DURATION"
+
+[node name="OptionButton" type="HSlider" parent="Container/VBoxContainer/HBoxContainer3"]
+margin_left = 74.0
+margin_right = 240.0
+margin_bottom = 16.0
+size_flags_horizontal = 3
+min_value = 0.1
+max_value = 3.0
+step = 0.01
+value = 1.0
+
+[node name="Tween" type="Tween" parent="."]
+
+[connection signal="pressed" from="Container/VBoxContainer/Button" to="." method="_on_play"]
