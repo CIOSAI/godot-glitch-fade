@@ -8,14 +8,8 @@ shader code:
 shader_type canvas_item;
 uniform bool horizontal;
 uniform sampler2D Noise : hint_albedo;
-uniform float distort;
+uniform float distort : hint_range(-1.0, 1.0);
 
-
-
-void vertex() {
-// Output:0
-
-}
 
 void fragment() {
 // Input:22
@@ -93,21 +87,13 @@ void fragment() {
 
 // Texture:4
 	vec3 n_out4p0;
-	float n_out4p1;
 	{
 		vec4 TEXTURE_tex_read = texture(TEXTURE, n_out5p0.xy);
 		n_out4p0 = TEXTURE_tex_read.rgb;
-		n_out4p1 = TEXTURE_tex_read.a;
 	}
 
 // Output:0
-	COLOR.rgb = n_out4p0;
-	COLOR.a = n_out4p1;
-
-}
-
-void light() {
-// Output:0
+	COLOR = vec4(n_out4p0, 1.);
 
 }
 ```
