@@ -1,54 +1,68 @@
-[gd_resource type="VisualShader" load_steps=18 format=2]
+[gd_resource type="VisualShader" load_steps=22 format=2]
 
-[sub_resource type="VisualShaderNodeScalarUniform" id=18]
+[sub_resource type="VisualShaderNodeScalarUniform" id=1]
 uniform_name = "distort"
 
-[sub_resource type="VisualShaderNodeScalarOp" id=21]
+[sub_resource type="VisualShaderNodeScalarOp" id=2]
 default_input_values = [ 0, 0.0, 1, 1.0 ]
 operator = 2
 
-[sub_resource type="VisualShaderNodeScalarFunc" id=22]
+[sub_resource type="VisualShaderNodeScalarFunc" id=3]
 
-[sub_resource type="VisualShaderNodeInput" id=2]
+[sub_resource type="VisualShaderNodeInput" id=4]
 input_name = "uv"
 
-[sub_resource type="VisualShaderNodeBooleanUniform" id=24]
+[sub_resource type="VisualShaderNodeBooleanUniform" id=5]
 uniform_name = "horizontal"
 
-[sub_resource type="VisualShaderNodeInput" id=26]
+[sub_resource type="VisualShaderNodeInput" id=6]
 input_name = "uv"
 
-[sub_resource type="VisualShaderNodeSwitch" id=29]
+[sub_resource type="VisualShaderNodeSwitch" id=7]
 
-[sub_resource type="VisualShaderNodeVectorCompose" id=30]
+[sub_resource type="VisualShaderNodeVectorCompose" id=8]
 
-[sub_resource type="VisualShaderNodeExpression" id=31]
+[sub_resource type="VisualShaderNodeExpression" id=9]
 size = Vector2( 314, 290 )
 expression = "if(flip) output = vec3(0., st.y, 0.);
 else output = vec3(st.x, 0., 0.);"
 
-[sub_resource type="VisualShaderNodeExpression" id=32]
+[sub_resource type="VisualShaderNodeExpression" id=10]
 size = Vector2( 220.064, 259.062 )
 expression = "y = pow(x, 1./abs(modifier)-1.)"
 
-[sub_resource type="VisualShaderNodeInput" id=3]
+[sub_resource type="VisualShaderNodeExpression" id=18]
+size = Vector2( 515, 268 )
+expression = "float xlvl = smoothstep(0., px, st.x)*smoothstep(st.x-px, st.x, 1.);
+float ylvl = smoothstep(0., px, st.y)*smoothstep(st.y-px, st.y, 1.);
+level = xlvl*ylvl;"
+
+[sub_resource type="VisualShaderNodeInput" id=11]
 input_name = "texture"
 
-[sub_resource type="VisualShaderNodeTexture" id=4]
+[sub_resource type="VisualShaderNodeInput" id=19]
+input_name = "screen_pixel_size"
+
+[sub_resource type="VisualShaderNodeVectorDecompose" id=20]
+
+[sub_resource type="VisualShaderNodeScalarOp" id=21]
+operator = 2
+
+[sub_resource type="VisualShaderNodeTexture" id=12]
 source = 5
 
-[sub_resource type="VisualShaderNodeVectorOp" id=7]
+[sub_resource type="VisualShaderNodeVectorOp" id=13]
 
-[sub_resource type="VisualShaderNodeVectorCompose" id=8]
+[sub_resource type="VisualShaderNodeVectorCompose" id=14]
 
-[sub_resource type="VisualShaderNodeTextureUniform" id=9]
+[sub_resource type="VisualShaderNodeTextureUniform" id=15]
 uniform_name = "Noise"
 texture_type = 1
 
-[sub_resource type="VisualShaderNodeTexture" id=10]
+[sub_resource type="VisualShaderNodeTexture" id=16]
 source = 5
 
-[sub_resource type="VisualShaderNodeVectorDecompose" id=11]
+[sub_resource type="VisualShaderNodeVectorDecompose" id=17]
 
 [resource]
 code = "shader_type canvas_item;
@@ -146,9 +160,29 @@ void fragment() {
 		n_out4p1 = TEXTURE_tex_read.a;
 	}
 
+// Input:30
+	vec3 n_out30p0 = vec3(SCREEN_PIXEL_SIZE, 1.0);
+
+// VectorDecompose:31
+	float n_out31p0 = n_out30p0.x;
+	float n_out31p1 = n_out30p0.y;
+	float n_out31p2 = n_out30p0.z;
+
+// Expression:29
+	float n_out29p0;
+	n_out29p0 = 0.0;
+	{
+		float xlvl = smoothstep(0., n_out31p0, n_out5p0.x)*smoothstep(n_out5p0.x-n_out31p0, n_out5p0.x, 1.);
+		float ylvl = smoothstep(0., n_out31p0, n_out5p0.y)*smoothstep(n_out5p0.y-n_out31p0, n_out5p0.y, 1.);
+		n_out29p0 = xlvl*ylvl;
+	}
+
+// ScalarOp:32
+	float n_out32p0 = n_out4p1 * n_out29p0;
+
 // Output:0
 	COLOR.rgb = n_out4p0;
-	COLOR.a = n_out4p1;
+	COLOR.a = n_out32p0;
 
 }
 
@@ -157,51 +191,65 @@ void light() {
 
 }
 "
-graph_offset = Vector2( -1918.06, 228.333 )
+graph_offset = Vector2( 1425.34, 256.85 )
 mode = 1
 flags/light_only = false
-nodes/fragment/0/position = Vector2( 1580, 440 )
-nodes/fragment/2/node = SubResource( 2 )
+nodes/fragment/0/position = Vector2( 1980, 280 )
+nodes/fragment/2/node = SubResource( 4 )
 nodes/fragment/2/position = Vector2( -1640, 600 )
-nodes/fragment/3/node = SubResource( 3 )
-nodes/fragment/3/position = Vector2( 1380, 600 )
-nodes/fragment/4/node = SubResource( 4 )
-nodes/fragment/4/position = Vector2( 1380, 440 )
-nodes/fragment/5/node = SubResource( 7 )
+nodes/fragment/3/node = SubResource( 11 )
+nodes/fragment/3/position = Vector2( 1440, 400 )
+nodes/fragment/4/node = SubResource( 12 )
+nodes/fragment/4/position = Vector2( 1440, 240 )
+nodes/fragment/5/node = SubResource( 13 )
 nodes/fragment/5/position = Vector2( 1160, 440 )
-nodes/fragment/6/node = SubResource( 8 )
+nodes/fragment/6/node = SubResource( 14 )
 nodes/fragment/6/position = Vector2( 660, 580 )
-nodes/fragment/7/node = SubResource( 9 )
+nodes/fragment/7/node = SubResource( 15 )
 nodes/fragment/7/position = Vector2( -880, 700 )
-nodes/fragment/8/node = SubResource( 10 )
+nodes/fragment/8/node = SubResource( 16 )
 nodes/fragment/8/position = Vector2( -860, 540 )
-nodes/fragment/9/node = SubResource( 11 )
+nodes/fragment/9/node = SubResource( 17 )
 nodes/fragment/9/position = Vector2( -640, 540 )
-nodes/fragment/14/node = SubResource( 18 )
+nodes/fragment/14/node = SubResource( 1 )
 nodes/fragment/14/position = Vector2( -600, 820 )
-nodes/fragment/17/node = SubResource( 21 )
+nodes/fragment/17/node = SubResource( 2 )
 nodes/fragment/17/position = Vector2( 420, 740 )
-nodes/fragment/18/node = SubResource( 22 )
+nodes/fragment/18/node = SubResource( 3 )
 nodes/fragment/18/position = Vector2( 200, 800 )
-nodes/fragment/20/node = SubResource( 24 )
+nodes/fragment/20/node = SubResource( 5 )
 nodes/fragment/20/position = Vector2( -1680, 420 )
-nodes/fragment/22/node = SubResource( 26 )
+nodes/fragment/22/node = SubResource( 6 )
 nodes/fragment/22/position = Vector2( 1180, 360 )
-nodes/fragment/25/node = SubResource( 29 )
+nodes/fragment/25/node = SubResource( 7 )
 nodes/fragment/25/position = Vector2( 920, 440 )
-nodes/fragment/26/node = SubResource( 30 )
+nodes/fragment/26/node = SubResource( 8 )
 nodes/fragment/26/position = Vector2( 640, 760 )
-nodes/fragment/27/node = SubResource( 31 )
+nodes/fragment/27/node = SubResource( 9 )
 nodes/fragment/27/position = Vector2( -1440, 520 )
 nodes/fragment/27/size = Vector2( 314, 290 )
 nodes/fragment/27/input_ports = "0,2,flip;1,1,st;"
 nodes/fragment/27/output_ports = "0,1,output;"
 nodes/fragment/27/expression = "if(flip) output = vec3(0., st.y, 0.);
 else output = vec3(st.x, 0., 0.);"
-nodes/fragment/28/node = SubResource( 32 )
+nodes/fragment/28/node = SubResource( 10 )
 nodes/fragment/28/position = Vector2( -380, 600 )
 nodes/fragment/28/size = Vector2( 220.064, 259.062 )
 nodes/fragment/28/input_ports = "0,0,x;1,0,modifier;"
 nodes/fragment/28/output_ports = "0,0,y;"
 nodes/fragment/28/expression = "y = pow(x, 1./abs(modifier)-1.)"
-nodes/fragment/connections = PoolIntArray( 4, 0, 0, 0, 4, 1, 0, 1, 3, 0, 4, 2, 5, 0, 4, 0, 7, 2, 8, 2, 8, 0, 9, 0, 17, 0, 6, 0, 14, 0, 18, 0, 18, 0, 17, 1, 22, 0, 5, 0, 20, 0, 25, 0, 6, 0, 25, 1, 25, 0, 5, 1, 17, 0, 26, 1, 26, 0, 25, 2, 2, 0, 27, 1, 20, 0, 27, 0, 27, 0, 8, 0, 14, 0, 28, 1, 9, 0, 28, 0, 28, 0, 17, 0 )
+nodes/fragment/29/node = SubResource( 18 )
+nodes/fragment/29/position = Vector2( 1460, 520 )
+nodes/fragment/29/size = Vector2( 515, 268 )
+nodes/fragment/29/input_ports = "0,1,st;1,0,px;"
+nodes/fragment/29/output_ports = "0,0,level;"
+nodes/fragment/29/expression = "float xlvl = smoothstep(0., px, st.x)*smoothstep(st.x-px, st.x, 1.);
+float ylvl = smoothstep(0., px, st.y)*smoothstep(st.y-px, st.y, 1.);
+level = xlvl*ylvl;"
+nodes/fragment/30/node = SubResource( 19 )
+nodes/fragment/30/position = Vector2( 1160, 740 )
+nodes/fragment/31/node = SubResource( 20 )
+nodes/fragment/31/position = Vector2( 1220, 620 )
+nodes/fragment/32/node = SubResource( 21 )
+nodes/fragment/32/position = Vector2( 1740, 280 )
+nodes/fragment/connections = PoolIntArray( 4, 0, 0, 0, 3, 0, 4, 2, 5, 0, 4, 0, 7, 2, 8, 2, 8, 0, 9, 0, 17, 0, 6, 0, 14, 0, 18, 0, 18, 0, 17, 1, 22, 0, 5, 0, 20, 0, 25, 0, 6, 0, 25, 1, 25, 0, 5, 1, 17, 0, 26, 1, 26, 0, 25, 2, 2, 0, 27, 1, 20, 0, 27, 0, 27, 0, 8, 0, 14, 0, 28, 1, 9, 0, 28, 0, 28, 0, 17, 0, 5, 0, 29, 0, 30, 0, 31, 0, 31, 0, 29, 1, 4, 1, 32, 0, 29, 0, 32, 1, 32, 0, 0, 1 )
