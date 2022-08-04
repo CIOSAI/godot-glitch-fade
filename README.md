@@ -2,9 +2,9 @@
 
 Download as a zip and import
 
-uniform boolean horizontal; (true means horizontal, false means vertical)
-uniform float distort; (between -1 and 1)
-uniform sampler2d noise; (noise texture, you can just use opensimplex noise that godot provides)
+- uniform boolean horizontal; (true means horizontal, false means vertical)
+- uniform float distort; (between -1 and 1)
+- uniform sampler2d noise; (noise texture, you can just use opensimplex noise that godot provides)
 
 for horizontal fading I want the pixels in the same y level to share the same noise value
 
