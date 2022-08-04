@@ -1,20 +1,16 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://unknown (2).png" type="Texture" id=1]
 [ext_resource path="res://glitch_fade_shader.tres" type="Shader" id=2]
 [ext_resource path="res://Script/Main.gd" type="Script" id=3]
 [ext_resource path="res://Scene/GlitchFadeController.tscn" type="PackedScene" id=4]
-
-[sub_resource type="OpenSimplexNoise" id=1]
-
-[sub_resource type="NoiseTexture" id=2]
-noise = SubResource( 1 )
+[ext_resource path="res://blocky_fade_texture.png" type="Texture" id=5]
 
 [sub_resource type="ShaderMaterial" id=3]
 shader = ExtResource( 2 )
 shader_param/horizontal = null
 shader_param/distort = 0.0
-shader_param/Noise = SubResource( 2 )
+shader_param/Noise = ExtResource( 5 )
 
 [sub_resource type="OpenSimplexNoise" id=4]
 
