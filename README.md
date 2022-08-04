@@ -43,3 +43,11 @@ uv coordinate over 1 or under 0 may result in it, or maybe other result for you,
 using `step()` to get 1 if the uv is in legal range(0 to 1) and 0 is its outside(over 1 or under 0), here im using `smoothstep()`, if you dont have screen_pixel_uv then try `1./resolution.x` or something similar, `step(val, edge)` instead of the normal `step(edge, val)` gives you essentially `1.-step(edge, vel)`, i assume we all know this
 
 ![image](https://user-images.githubusercontent.com/89374056/182787301-385ce462-7963-48c3-b466-7ba779531746.png)
+
+this above would give us 1 if the uv is legal, 0 if not, multiply this back with the original opacity
+
+![image](https://user-images.githubusercontent.com/89374056/182788624-36c9ad0c-179e-49d7-a0d8-baa9e465a23d.png)
+
+tada!
+
+![image](https://user-images.githubusercontent.com/89374056/182788697-d2babc3e-c3f4-4aca-be42-44bba7bcdee7.png)
